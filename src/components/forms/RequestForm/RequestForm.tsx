@@ -77,7 +77,7 @@ export const RequestForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen }
               }}
             />
 
-            <FileInput register={register} label="Upload file" id="uploadFile" errors={errors} />
+            <FileInput name="uploadFile" register={register} label="Upload file" id="uploadFile" errors={errors} />
 
 
             <SubmitButtons />
