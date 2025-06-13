@@ -11,6 +11,7 @@ export const Header: React.FC = () => {
         <Logo />
 
 
+
         <ul className='flex items-center gap-[25px]'>
           <li>
             <button className='flex items-center gap-1'>
