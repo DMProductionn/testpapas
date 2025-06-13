@@ -1,0 +1,51 @@
+
+html{
+  box-sizing: border-box;                               
+}
+
+a{
+  color: inherit;
+  text-decoration: none;
+}
+
+li{
+  list-style: none;
+}
+
+body {
+  height: 100%;
+  background-color: #09001A;
+  color: white;
+  font-family: 'Inter', sans-serif;
+  font-weight: 400;
+}
+
+
+button {
+    cursor: pointer;
+  }
+
+a {
+    cursor: pointer;
+}
+
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 5px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 3px;
+  margin-right: 20px; /* Отступ справа */
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+

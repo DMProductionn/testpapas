@@ -1,0 +1,14 @@
+export { ArrowDownIcon } from './arrow_down/ArrowDownIcon';
+export { InIcon } from './in/InIcon';
+export { MailIcon } from './mail/MailIcon';
+export { TelegramIcon } from './telegram/TelegramIcon';
+export { PlusIcon } from './plus/PlusIcon'
+export { XCloseIcon } from './x_close/XCloseIcon'
+export { Globe } from './globe/Globe'
+export { CreditCardIcon } from './credit-card/CreditCard'
+export { WalletIcon } from './wallet/WalletIcon'
+export { PlusFileIcon } from './plus_file/PlusFileIcon'
+export { TrashIcon } from './trash/TrashIcon'
+export { CountryIcon } from './country/CountryIcon'
+export { DeviceIcon } from './device/DeviceIcon'
+export { CurrencyIcon } from './currency/CurrencyIcon'
