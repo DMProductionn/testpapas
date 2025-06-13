@@ -1,4 +1,4 @@
 export const UX_DATA = {
   title: 'UX Testing',
-  img: '/wave.webp'
+  img: '/testpapas/wave.webp'
 }
