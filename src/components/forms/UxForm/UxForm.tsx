@@ -34,6 +34,7 @@ export const UxForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen }) => 
   const testDevice: any = watch('testDevice');
   const withdrawalEnabled = watch('withdrawalToggle');
 
+  
   useEffect(() => {
     setValue('withdrawalToggle', true);
   }, [setValue]);
