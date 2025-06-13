@@ -6,6 +6,7 @@
   "homepage": "https://dmproductionn.github.io/testpapas",
   "scripts": {
     "dev": "vite",
+    "predeploy": "npm run build",
     "build": "tsc -b && vite build",
     "deploy": "gh-pages -d dist",
     "lint": "eslint .",
