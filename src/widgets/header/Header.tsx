@@ -10,6 +10,7 @@ export const Header: React.FC = () => {
       <div className="flex gap-[130px]">
         <Logo />
 
+
         <ul className='flex items-center gap-[25px]'>
           <li>
             <button className='flex items-center gap-1'>
