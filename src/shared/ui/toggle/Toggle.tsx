@@ -44,7 +44,7 @@ export const Toggle: React.FC<ToggleProps> = ({
   }
 
   return (
-    <label className={`flex justify-between items-center ${uxTesting ? 'mb-0 rounded-[0px] pl-0' : 'mb-4 rounded-[16px]'} bg-[#F7F8FC] h-[70px] gap-3 px-[25px] ${className}`}>
+    <label className={`flex justify-between items-center ${uxTesting ? 'mb-0 rounded-[0px] pl-0 h-[40px]' : 'mb-4 rounded-[16px] h-[70px]'} bg-[#F7F8FC] gap-3 px-[25px] ${className}`}>
       {label && <span className="text-black font-[600] text-[22px] leading-[130%]">{label}</span>}
 
       <input

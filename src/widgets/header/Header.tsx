@@ -10,11 +10,9 @@ export const Header: React.FC = () => {
       <div className="flex gap-[130px]">
         <Logo />
 
-
-
-        <ul className='flex items-center gap-[25px]'>
+        <ul className="flex items-center gap-[25px]">
           <li>
-            <button className='flex items-center gap-1'>
+            <button className="flex items-center gap-1">
               Our services <ArrowDownIcon />
             </button>
           </li>
@@ -26,7 +24,7 @@ export const Header: React.FC = () => {
           </li>
         </ul>
       </div>
-      <div className='flex items-center gap-[8px]'>
+      <div className="flex items-center gap-[8px]">
         <TelegramIcon />
         <InIcon />
         <MailIcon />

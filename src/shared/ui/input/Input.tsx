@@ -25,7 +25,7 @@ export const Input: React.FC<{
   isClientName = false,
   uxTesting
 }) => (
-  <div className="mb-4 w-full">
+  <div className={`${uxTesting ? 'mb-0' : 'mb-4'} w-full`}>
     <label htmlFor={id} className="text-[14px] font-[500] text-black">
       {label} {required && <span className="text-[#00A3FF]">*</span>}
     </label>

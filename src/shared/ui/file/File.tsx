@@ -30,7 +30,6 @@ export const FileInput: React.FC<FileInputProps> = ({
   const [files, setFiles] = useState<File[]>([]);
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // Регистрируем поле в react-hook-form
   const { ref, onChange, ...rest } = register(name, {
     required: typeof required === 'string' ? required : required ? `${label} обязателен` : false,
   });
@@ -42,7 +41,6 @@ export const FileInput: React.FC<FileInputProps> = ({
 
       setFiles(updatedFiles);
 
-      // Создаем DataTransfer для работы с файлами
       let dataTransfer: DataTransfer | null = null;
 
       if (multiple) {
@@ -53,7 +51,6 @@ export const FileInput: React.FC<FileInputProps> = ({
         e.target.files = newFiles[0] as any;
       }
 
-      // Обновляем значение в форме
       onChange(e);
       setValue(name, multiple ? (dataTransfer ? dataTransfer.files : null) : newFiles[0], {
         shouldValidate: true,
@@ -65,7 +62,6 @@ export const FileInput: React.FC<FileInputProps> = ({
     const newFiles = files.filter((_, i) => i !== index);
     setFiles(newFiles);
 
-    // Обновляем файлы в input и значение формы
     if (inputRef.current) {
       const dataTransfer = new DataTransfer();
       newFiles.forEach((file) => dataTransfer.items.add(file));
@@ -83,7 +79,6 @@ export const FileInput: React.FC<FileInputProps> = ({
         {label} {required && <span className="text-[#00A3FF]">*</span>}
       </label>
 
-      {/* Скрытый input для выбора файлов */}
       <input
         id={id}
         type="file"
@@ -99,12 +94,25 @@ export const FileInput: React.FC<FileInputProps> = ({
         {...rest}
       />
 
-      {/* Кастомная кнопка для вызова диалога выбора файлов */}
       <div className="relative">
         <div
-          className={`w-full rounded-[16px] min-h-[130px] bg-[#F7F8FC] mt-[4px] outline-none p-[20px] text-left text-[#737F8F] font-[500] flex flex-col justify-center ${
+          className={`w-full rounded-[16px] min-h-[130px] bg-[#F7F8FC] mt-[4px] outline-none p-[20px] text-left text-[#737F8F] font-[500] flex gap-[8px] justify-start ${
             errors[name] ? 'border-red-500 border' : 'border-none'
           }`}>
+          {files.length > 0 && (
+            <div className="space-y-2">
+              {files.map((file, index) => (
+                <button
+                  key={index}
+                  type="button"
+                  onClick={() => removeFile(index)}
+                  className="flex justify-center px-[2px] items-center w-[80px] h-[82px] rounded-[12px] bg-white flex-col gap-2 text-[#737F8F]">
+                  <TrashIcon />
+                  <span className="text-center text-[8px] font-[500]">{file.name}</span>
+                </button>
+              ))}
+            </div>
+          )}
           <button
             type="button"
             onClick={() => inputRef.current?.click()}
@@ -115,26 +123,6 @@ export const FileInput: React.FC<FileInputProps> = ({
         </div>
       </div>
 
-      {/* Список выбранных файлов */}
-      {files.length > 0 && (
-        <div className="mt-3 space-y-2">
-          {files.map((file, index) => (
-            <div key={index} className="flex items-center gap-[10px] bg-white rounded-[12px] p-3">
-              <button
-                type="button"
-                onClick={() => removeFile(index)}
-                className="text-[#737F8F] hover:text-red-500">
-                <TrashIcon />
-              </button>
-              <div className="flex items-center gap-2 truncate">
-                <span className="text-[#737F8F] text-sm font-[500] truncate">{file.name}</span>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-
-      {/* Отображение ошибок валидации */}
       {errors?.[name] && <p className="mt-1 text-sm text-red-600">{errors[name].message}</p>}
     </div>
   );

@@ -28,7 +28,7 @@ export const PlusIcon: React.FC<PlusProps> = ({ small = false }) => {
           height="160.667"
           filterUnits="userSpaceOnUse"
           colorInterpolationFilters="sRGB">
-          <feFlood flood-opacity="0" result="BackgroundImageFix" />
+          <feFlood floodOpacity="0" result="BackgroundImageFix" />
           <feColorMatrix
             in="SourceAlpha"
             type="matrix"

@@ -12,19 +12,19 @@ import {
   XCloseIcon,
 } from '../../../shared/icons';
 import { currencyOptions, desktopOsOptions, deviceOptions, mobileOsOptions } from './form.data';
-import { useClientStore } from '../../../app/store/client.store';
 import { Input, SelectComponent, Textarea, Toggle } from '../../../shared/ui';
 import { countryOptions } from '../../../shared/constans/countryOptions';
 import { FileInput } from '../../../shared/ui/file/File';
 import { SubmitButtons } from '../../submit_buttons/SubmitButtons';
 
-export const PaymentForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen }) => {
+export const PaymentForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen, onFormSubmit }) => {
   const [showOperatingSystem, setShowOperatingSystem] = useState(false);
-  const { client } = useClientStore();
+  const client = localStorage.getItem('client');
 
   const {
     register,
     handleSubmit,
+    reset,
     control,
     watch,
     formState: { errors },
@@ -51,8 +51,22 @@ export const PaymentForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen }
   }, [testDevice, setValue]);
 
   const onSubmit = (data: FormData) => {
-    console.log('Form submitted:', data);
+    console.log(data);
+    
+    const formData = localStorage.getItem('Payment Testing');
+    let formsArray = [];
+
+    if (formData) {
+      formsArray = JSON.parse(formData);
+    }
+
+    formsArray.push(data);
+
+    localStorage.setItem('Payment Testing', JSON.stringify(formsArray));
+
     setIsModalOpen(false);
+    reset();
+    onFormSubmit?.();
   };
 
   const validateDecimal = (value: string) => {
@@ -191,7 +205,13 @@ export const PaymentForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen }
               }}
             />
 
-            <FileInput register={register} name='file' label="Upload file" id="uploadFile" errors={errors} />
+            <FileInput
+              register={register}
+              name="file"
+              label="Upload file"
+              id="uploadFile"
+              errors={errors}
+            />
 
             {/* Поле Withdrawal Amount (условное) */}
             {/* {showWithdrawalAmount && (

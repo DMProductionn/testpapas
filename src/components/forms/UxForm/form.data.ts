@@ -154,6 +154,11 @@ export const currencyOptions: CurrencyOption[] = [
   { value: 'ZWL', label: 'ZWL - ($)' }
 ];
 
+export const testTargetOptions = [
+  { value: 'For My Product', label: 'For My Product' },
+  { value: 'For a Competitors Product', label: 'For a Competitors Product' },
+]
+
 export const deviceOptions = [
   { value: 'any', label: 'Any' },
   { value: 'mobile', label: 'Mobile' },

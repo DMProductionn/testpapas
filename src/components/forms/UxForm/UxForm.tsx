@@ -11,19 +11,25 @@ import {
   WalletIcon,
   XCloseIcon,
 } from '../../../shared/icons';
-import { currencyOptions, desktopOsOptions, deviceOptions, mobileOsOptions } from './form.data';
-import { useClientStore } from '../../../app/store/client.store';
-import { Input, SelectComponent, Textarea, Toggle } from '../../../shared/ui';
+import {
+  currencyOptions,
+  desktopOsOptions,
+  deviceOptions,
+  mobileOsOptions,
+  testTargetOptions,
+} from './form.data';
+import { Input, Radio, SelectComponent, Textarea, Toggle } from '../../../shared/ui';
 import { countryOptions } from '../../../shared/constans/countryOptions';
 import { FileInput } from '../../../shared/ui/file/File';
 import { SubmitButtons } from '../../submit_buttons/SubmitButtons';
 
-export const UxForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen }) => {
+export const UxForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen, onFormSubmit }) => {
   const [showOperatingSystem, setShowOperatingSystem] = useState(false);
-  const { client } = useClientStore();
+  const client = localStorage.getItem('client');
 
   const {
     register,
+    reset,
     handleSubmit,
     control,
     watch,
@@ -34,11 +40,9 @@ export const UxForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen }) => 
   const testDevice: any = watch('testDevice');
   const withdrawalEnabled = watch('withdrawalToggle');
 
-  
   useEffect(() => {
     setValue('withdrawalToggle', true);
   }, [setValue]);
-  
 
   useEffect(() => {
     if (client) {
@@ -58,8 +62,20 @@ export const UxForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen }) => 
   }, [testDevice, setValue]);
 
   const onSubmit = (data: FormData) => {
-    console.log('Form submitted:', data);
+    const formData = localStorage.getItem('UX Testing');
+    let formsArray = [];
+
+    if (formData) {
+      formsArray = JSON.parse(formData);
+    }
+
+    formsArray.push(data);
+
+    localStorage.setItem('UX Testing', JSON.stringify(formsArray));
+
     setIsModalOpen(false);
+    reset();
+    onFormSubmit?.();
   };
 
   const validateDecimal = (value: string) => {
@@ -93,6 +109,15 @@ export const UxForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen }) => 
               errors={errors}
               placeholder="Client Name"
               readOnly
+            />
+
+            {/* Поле Currency */}
+            <Radio
+              register={register}
+              required
+              label="Select test target"
+              name="currency"
+              options={testTargetOptions}
             />
 
             {/* Поле Country */}
@@ -170,7 +195,7 @@ export const UxForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen }) => 
               />
             </div>
 
-            <div className="flex flex-col bg-[#F7F8FC] mb-4 rounded-[16px] pl-[25px]">
+            <div className="flex flex-col bg-[#F7F8FC] mb-4 rounded-[16px] p-[25px] gap-[16px]">
               <Toggle uxTesting control={control} name="KYC" label="KYC" />
               <Toggle uxTesting control={control} name="Wagering" label="Wagering" />
               <Toggle uxTesting control={control} name="withdrawalToggle" label="Withdrawal" />

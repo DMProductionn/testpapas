@@ -1,25 +1,22 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import type { FormProps } from '../../../shared/types/form_props.type';
-import {
-  XCloseIcon,
-} from '../../../shared/icons';
-import { useClientStore } from '../../../app/store/client.store';
+import { XCloseIcon } from '../../../shared/icons';
 import { Input, Textarea } from '../../../shared/ui';
 import { FileInput } from '../../../shared/ui/file/File';
 import { SubmitButtons } from '../../submit_buttons/SubmitButtons';
 import type { FormData } from './type';
 
-export const RequestForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen }) => {
-  const { client } = useClientStore();
+export const RequestForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen, onFormSubmit }) => {
+  const client = localStorage.getItem('client');
 
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
     setValue,
   } = useForm<FormData>();
-
 
   useEffect(() => {
     if (client) {
@@ -27,10 +24,21 @@ export const RequestForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen }
     }
   }, [client, setValue]);
 
-
   const onSubmit = (data: FormData) => {
-    console.log('Form submitted:', data);
+    const formData = localStorage.getItem('Custom Request');
+    let formsArray = [];
+
+    if (formData) {
+      formsArray = JSON.parse(formData);
+    }
+
+    formsArray.push(data);
+
+    localStorage.setItem('Custom Request', JSON.stringify(formsArray));
+
     setIsModalOpen(false);
+    reset();
+    onFormSubmit?.();
   };
 
   if (!isModalOpen) return null;
@@ -61,7 +69,6 @@ export const RequestForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen }
               readOnly
             />
 
-
             <Textarea
               label="Additional Information"
               id="description"
@@ -77,8 +84,13 @@ export const RequestForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen }
               }}
             />
 
-            <FileInput name="uploadFile" register={register} label="Upload file" id="uploadFile" errors={errors} />
-
+            <FileInput
+              name="uploadFile"
+              register={register}
+              label="Upload file"
+              id="uploadFile"
+              errors={errors}
+            />
 
             <SubmitButtons />
           </form>

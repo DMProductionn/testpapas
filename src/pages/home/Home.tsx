@@ -2,17 +2,20 @@ import { useSearchParams } from 'react-router-dom';
 import { MainCard } from '../../entities/main_card/MainCard';
 import { CARD_DATA } from './card.data';
 import { useEffect } from 'react';
-import { useClientStore } from '../../app/store/client.store';
 
 export const Home: React.FC = () => {
   const [searchParams] = useSearchParams();
   const client = searchParams.get('client');
 
-  const { setClient } = useClientStore();
-  
   useEffect(() => {
-    setClient(client);
-  }, [client])
+    if (client) {
+      localStorage.setItem('client', client);
+    } else {
+      const savedClient = localStorage.getItem('client');
+      if (savedClient && !client) {
+      }
+    }
+  }, [client]);
 
   return (
     <div className="flex flex-col items-center">
