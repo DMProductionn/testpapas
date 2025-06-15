@@ -22,6 +22,7 @@ import { Input, Radio, SelectComponent, Textarea, Toggle } from '../../../shared
 import { countryOptions } from '../../../shared/constans/countryOptions';
 import { FileInput } from '../../../shared/ui/file/File';
 import { SubmitButtons } from '../../submit_buttons/SubmitButtons';
+import { handleKeyPress, validateAmount } from './utils';
 
 export const UxForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen, onFormSubmit }) => {
   const [showOperatingSystem, setShowOperatingSystem] = useState(false);
@@ -38,10 +39,10 @@ export const UxForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen, onFor
   } = useForm<FormData>();
 
   const testDevice: any = watch('testDevice');
-  const withdrawalEnabled = watch('withdrawalToggle');
+  const withdrawalEnabled = watch('withdrawal');
 
   useEffect(() => {
-    setValue('withdrawalToggle', true);
+    setValue('withdrawal', true);
   }, [setValue]);
 
   useEffect(() => {
@@ -62,6 +63,8 @@ export const UxForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen, onFor
   }, [testDevice, setValue]);
 
   const onSubmit = (data: FormData) => {
+    console.log(data);
+    
     const formData = localStorage.getItem('UX Testing');
     let formsArray = [];
 
@@ -69,7 +72,15 @@ export const UxForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen, onFor
       formsArray = JSON.parse(formData);
     }
 
-    formsArray.push(data);
+    const transformedData = {
+      ...data,
+      testDevice: typeof data.testDevice === 'object' ? data.testDevice.label : data.testDevice,
+      operatingSystem: typeof data.operatingSystem === 'object' ? data.operatingSystem.label : data.operatingSystem,
+      currency: typeof data.currency === 'object' ? data.currency.label : data.currency,
+      country: data.country
+    };
+
+    formsArray.push(transformedData);
 
     localStorage.setItem('UX Testing', JSON.stringify(formsArray));
 
@@ -78,26 +89,23 @@ export const UxForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen, onFor
     onFormSubmit?.();
   };
 
-  const validateDecimal = (value: string) => {
-    if (!value) return true;
-    return /^\d*\.?\d*$/.test(value) || 'Only numbers with decimal point are allowed';
-  };
-
   if (!isModalOpen) return null;
 
   return (
     <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-[40px] shadow-xl max-w-2xl w-full max-h-[95vh] overflow-y-auto custom-scrollbar">
-        <div className="p-[25px]">
-          <div className="flex justify-between items-center">
+      <div className="bg-white md:rounded-[40px] shadow-xl w-full h-full md:h-[95vh] md:max-w-2xl flex flex-col">
+        <div className="p-[25px] flex-1 overflow-y-auto pb-[40px] md:pb-[25px] custom-scrollbar">
+          <div className="flex gap-x-[10px] justify-between items-center mb-[16px]">
             <p className="font-[500] text-[32px] text-blueDark leading-[130%]">
               Submit Your Testing Request
             </p>
-            <button
-              onClick={() => setIsModalOpen(false)}
-              className="bg-[#F7F8FC] rounded-[32px] h-[72px] w-[72px] flex justify-center items-center">
-              <XCloseIcon />
-            </button>
+            <div>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="bg-[#F7F8FC] rounded-[32px] h-[72px] w-[72px] flex justify-center items-center">
+                <XCloseIcon />
+              </button>
+            </div>
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Поле Client Name */}
@@ -116,7 +124,7 @@ export const UxForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen, onFor
               register={register}
               required
               label="Select test target"
-              name="currency"
+              name="testTarget"
               options={testTargetOptions}
             />
 
@@ -141,7 +149,6 @@ export const UxForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen, onFor
               errors={errors}
               placeholder="e.g., Visa, PayPal, Crypto"
               type="text"
-              validation={{ validate: validateDecimal }}
             />
 
             {/* Поле Test Device */}
@@ -169,7 +176,7 @@ export const UxForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen, onFor
               />
             )}
 
-            <div className="flex gap-[16px] items-center w-full">
+            <div className="flex flex-col md:flex-row gap-[16px] items-center w-full">
               {/* Поле Currency */}
               <SelectComponent
                 leftIcon={<CurrencyIcon />}
@@ -191,14 +198,17 @@ export const UxForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen, onFor
                 required
                 placeholder="0.00"
                 type="text"
-                validation={{ validate: validateDecimal }}
+                onKeyPress={handleKeyPress}
+                validation={{
+                  validate: validateAmount
+                }}
               />
             </div>
 
             <div className="flex flex-col bg-[#F7F8FC] mb-4 rounded-[16px] p-[25px] gap-[16px]">
               <Toggle uxTesting control={control} name="KYC" label="KYC" />
               <Toggle uxTesting control={control} name="Wagering" label="Wagering" />
-              <Toggle uxTesting control={control} name="withdrawalToggle" label="Withdrawal" />
+              <Toggle uxTesting control={control} name="withdrawal" label="Withdrawal" />
               {withdrawalEnabled && (
                 <Input
                   uxTesting
@@ -209,7 +219,10 @@ export const UxForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen, onFor
                   errors={errors}
                   placeholder="0.00"
                   type="text"
-                  validation={{ validate: validateDecimal }}
+                  onKeyPress={handleKeyPress}
+                  validation={{
+                    validate: validateAmount
+                  }}
                 />
               )}
             </div>
@@ -246,20 +259,6 @@ export const UxForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen, onFor
               id="uploadFile"
               errors={errors}
             />
-
-            {/* Поле Withdrawal Amount (условное) */}
-            {/* {showWithdrawalAmount && (
-              <Input
-                label="Withdrawal Amount"
-                id="withdrawalAmount"
-                register={register}
-                errors={errors}
-                required={showWithdrawalAmount}
-                placeholder="0.00"
-                type="text"
-                validation={{ validate: validateDecimal }}
-              />
-            )} */}
 
             <SubmitButtons />
           </form>

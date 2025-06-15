@@ -45,17 +45,19 @@ export const RequestForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen, 
 
   return (
     <div className="fixed inset-0 bg-black/50 bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white rounded-[40px] shadow-xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-        <div className="p-[25px] pt-[40px]">
-          <div className="flex justify-between items-center">
+      <div className="bg-white md:rounded-[40px] shadow-xl w-full h-full md:h-[95vh] md:max-w-2xl flex flex-col">
+        <div className="p-[25px] flex-1 overflow-y-auto pb-[40px] md:pb-[25px] custom-scrollbar">
+          <div className="flex gap-x-[10px] justify-between items-center mb-[16px]">
             <p className="font-[500] text-[32px] text-blueDark leading-[130%]">
               Submit Your Testing Request
             </p>
-            <button
-              onClick={() => setIsModalOpen(false)}
-              className="bg-[#F7F8FC] rounded-[32px] h-[72px] w-[72px] flex justify-center items-center">
-              <XCloseIcon />
-            </button>
+            <div>
+              <button
+                onClick={() => setIsModalOpen(false)}
+                className="bg-[#F7F8FC] rounded-[32px] h-[72px] w-[72px] flex justify-center items-center">
+                <XCloseIcon />
+              </button>
+            </div>
           </div>
           <form onSubmit={handleSubmit(onSubmit)}>
             {/* Поле Client Name */}
@@ -85,10 +87,10 @@ export const RequestForm: React.FC<FormProps> = ({ isModalOpen, setIsModalOpen, 
             />
 
             <FileInput
-              name="uploadFile"
+              name="file"
               register={register}
               label="Upload file"
-              id="uploadFile"
+              id="file"
               errors={errors}
             />
 

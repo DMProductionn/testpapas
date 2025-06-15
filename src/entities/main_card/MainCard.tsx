@@ -12,7 +12,7 @@ export const MainCard: React.FC<CardProps> = ({ img, title, desc, link }) => {
   return (
     <Link
       to={`/method${link}`}
-      className="max-w-[385px] w-full rounded-[16px] min-h-[180px] overflow-hidden relative p-[16px] pb-0 inline-block bg-[linear-gradient(90deg,#110033_0%,#33254E_100%)]">
+      className="2xl:max-w-[385px] w-full rounded-[16px] min-h-[180px] overflow-hidden relative p-[16px] pb-0 inline-block bg-[linear-gradient(90deg,#110033_0%,#33254E_100%)]">
       <p className="text-[28px] font-[500] mb-[10px]">{title}</p>
       <p className="text-[15px] max-w-[235px] text-grayText">{desc}</p>
       <img

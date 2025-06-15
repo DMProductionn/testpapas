@@ -1,14 +1,17 @@
 
 export interface FormData {
   clientName: string;
-  country: string;
-  testDevice: string;
-  operatingSystem: string;
-  currency: string;
+  country: { value: string; label: string } | string;
+  testDevice: { value: string; label: string } | string;
+  operatingSystem: { value: string; label: string } | string;
+  currency: { value: string; label: string } | string;
   depositAmount: string;
-  withdrawalAmount: string;
   uxTestingOption: string;
   uploadFile: FileList | null;
+  paymentMethod: string;
+  link: string;
+  description: string;
+  KYC: boolean;
 }
 
 export interface CountryOption {

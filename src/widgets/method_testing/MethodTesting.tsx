@@ -58,7 +58,7 @@ export const MethodTesting: React.FC<MethodTestingType> = ({ img, title }) => {
               id={index.toString()}
               title={title}
               country={form.country}
-              currency={form.currency?.value}
+              currency={form.currency}
               paymentMethod={form.paymentMethod}
               link={form.link || ''}
               onDelete={handleDeleteCard}

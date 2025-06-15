@@ -19,10 +19,10 @@ export const Home: React.FC = () => {
 
   return (
     <div className="flex flex-col items-center">
-      <p className="mt-[190px] text-[32px] font-[500]">
+      <p className="mt-[190px] text-[32px] text-center font-[500] max-w-[440px] lg:max-w-full">
         Select the type of test you want to perform
       </p>
-      <div className="mt-[140px] flex gap-[8px] w-full justify-center">
+      <div className="xl:mt-[140px] md:mt-[65px] lg:px-[100px] 2xl:px-0 mt-[40px] flex flex-col 2xl:flex-row gap-x-[8px] gap-y-[28px] w-full justify-center ">
         {CARD_DATA.map((card) => (
           <MainCard key={card.id} {...card} />
         ))}

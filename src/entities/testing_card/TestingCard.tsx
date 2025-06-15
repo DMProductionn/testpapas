@@ -23,10 +23,12 @@ export const TestingCard: React.FC<TestingCardProps> = ({
   link,
   onDelete,
 }) => {
+
+
   return (
-    <div className="h-[105px] w-full bg-gradient-to-r from-[#110033] to-[#33254E] rounded-[16px] p-[16px] flex justify-between items-start">
+    <div className="h-[105px] h-auto w-full gap-x-[10px] bg-gradient-to-r from-[#110033] to-[#33254E] rounded-[16px] p-[16px] flex justify-between items-start">
       <div className="flex flex-col gap-[12px]">
-        <div className="flex gap-[12px] items-center">
+        <div className="flex flex-wrap gap-[12px] items-center">
           <p className="text-[22px] leading-[130%]">{title}</p>
           {country && (
             <div className="w-auto h-[32px] bg-[#220066] rounded-[8px] px-[6px] flex items-center justify-center">
@@ -42,7 +44,7 @@ export const TestingCard: React.FC<TestingCardProps> = ({
         <div className="flex gap-[12px] items-center">
           {currency && (
             <div className="w-auto min-w-[32px] h-[32px] bg-[#220066] rounded-[8px] px-[6px] flex items-center justify-center">
-              {currency}
+              {currency.match(/\((.*?)\)/)?.[1] || currency}
             </div>
           )}
           {paymentMethod && (
@@ -58,11 +60,13 @@ export const TestingCard: React.FC<TestingCardProps> = ({
         </div>
       </div>
 
-      <button
-        onClick={() => onDelete?.(id)}
-        className="bg-[#F7F8FC] opacity-[50%] rounded-full w-[40px] h-[40px] flex justify-center items-center">
-        <XCloseIcon color="#09001A" />
-      </button>
+      <div>
+        <button
+          onClick={() => onDelete?.(id)}
+          className="bg-[#F7F8FC] opacity-[50%] rounded-full w-[40px] h-[40px] flex justify-center items-center">
+          <XCloseIcon color="#09001A" />
+        </button>
+      </div>
     </div>
   );
 };
